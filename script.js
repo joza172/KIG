@@ -1,3 +1,32 @@
+// Header Scroll Behavior
+let lastScrollTop = 0;
+const header = document.querySelector("header");
+const heroSection = document.querySelector(".hero");
+
+window.addEventListener("scroll", () => {
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const heroHeight = heroSection ? heroSection.offsetHeight : 0;
+  const scrollingDown = scrollTop > lastScrollTop;
+
+  // Handle header visibility first (priority logic)
+  if (scrollingDown && scrollTop > 50) {
+    // Hide header immediately when scrolling down from top
+    header.classList.add("hidden");
+  } else if (!scrollingDown || scrollTop <= 50) {
+    // Show header when scrolling up or near top
+    header.classList.remove("hidden");
+  }
+
+  // Only add scrolled class (white background) when header is visible and past threshold
+  if (!header.classList.contains("hidden") && scrollTop > 100) {
+    header.classList.add("scrolled");
+  } else if (scrollTop <= 100) {
+    header.classList.remove("scrolled");
+  }
+
+  lastScrollTop = scrollTop;
+});
+
 // Mobile Navigation Toggle
 const mobileMenu = document.getElementById("mobile-menu");
 const navMenu = document.querySelector(".nav-menu");
