@@ -3,14 +3,19 @@ let lastScrollTop = 0;
 const header = document.querySelector("header");
 const heroSection = document.querySelector(".hero");
 
+// Add a class to ensure transitions work after page load
+setTimeout(() => {
+  header.classList.add("transitions-ready");
+}, 1500);
+
 window.addEventListener("scroll", () => {
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   const heroHeight = heroSection ? heroSection.offsetHeight : 0;
   const scrollingDown = scrollTop > lastScrollTop;
 
-  // Handle header visibility first (priority logic)
+  // Handle header visibility with smooth transition
   if (scrollingDown && scrollTop > 50) {
-    // Hide header immediately when scrolling down from top
+    // Hide header when scrolling down from top
     header.classList.add("hidden");
   } else if (!scrollingDown || scrollTop <= 50) {
     // Show header when scrolling up or near top
@@ -318,7 +323,7 @@ animationStyles.textContent = `
     }
     
     .nav-link.active {
-        color: #D4A373!important;
+        color: #a68b5c!important;
     }
 `;
 document.head.appendChild(animationStyles);
@@ -420,5 +425,64 @@ const debouncedScrollHandler = debounce(() => {
 }, 10);
 
 window.addEventListener("scroll", debouncedScrollHandler);
+
+// Our Approach Section Slider
+document.addEventListener("DOMContentLoaded", function () {
+  const leftSlider = document.querySelector(
+    ".focus-sectors-section-slider-left"
+  );
+  const rightSlider = document.querySelector(
+    ".focus-sectors-section-slider-right"
+  );
+  const dots = document.querySelectorAll(".slider-dots li");
+  const prevBtn = document.querySelector(".prev-btn");
+  const nextBtn = document.querySelector(".next-btn");
+
+  if (!leftSlider || !rightSlider) return;
+
+  const leftSlides = leftSlider.querySelectorAll(".slider-item");
+  const rightSlides = rightSlider.querySelectorAll(".slider-item");
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    // Hide all slides
+    leftSlides.forEach((slide) => slide.classList.remove("active"));
+    rightSlides.forEach((slide) => slide.classList.remove("active"));
+    dots.forEach((dot) => dot.classList.remove("active"));
+
+    // Show current slide
+    if (leftSlides[index]) leftSlides[index].classList.add("active");
+    if (rightSlides[index]) rightSlides[index].classList.add("active");
+    if (dots[index]) dots[index].classList.add("active");
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % leftSlides.length;
+    showSlide(currentSlide);
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + leftSlides.length) % leftSlides.length;
+    showSlide(currentSlide);
+  }
+
+  // Event listeners
+  if (nextBtn) nextBtn.addEventListener("click", nextSlide);
+  if (prevBtn) prevBtn.addEventListener("click", prevSlide);
+
+  // Dot navigation
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      currentSlide = index;
+      showSlide(currentSlide);
+    });
+  });
+
+  // Auto-slide (optional)
+  setInterval(nextSlide, 5000);
+
+  // Initialize first slide
+  showSlide(0);
+});
 
 console.log("Business Website Template Loaded Successfully!");
