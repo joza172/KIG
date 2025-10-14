@@ -514,6 +514,30 @@ document.addEventListener("DOMContentLoaded", function () {
   const worldMapObject = document.getElementById("world-map-svg");
   const globalDescription = document.getElementById("global-description");
 
+  // Make SVG responsive by removing fixed dimensions
+  function makeMapResponsive() {
+    if (worldMapObject && worldMapObject.contentDocument) {
+      const svgElement = worldMapObject.contentDocument.querySelector("svg");
+      if (svgElement) {
+        svgElement.removeAttribute("width");
+        svgElement.removeAttribute("height");
+        svgElement.setAttribute(
+          "viewBox",
+          svgElement.getAttribute("viewBox") || "0 0 1009.6727 665.96301"
+        );
+        svgElement.style.width = "100%";
+        svgElement.style.height = "auto";
+        svgElement.style.maxWidth = "100%";
+      }
+    }
+  }
+
+  // Try to make map responsive when object loads
+  worldMapObject.addEventListener("load", makeMapResponsive);
+
+  // Also try immediately in case it's already loaded
+  setTimeout(makeMapResponsive, 100);
+
   const originalText =
     "Explore our global network of partnerships and projects spanning across multiple continents, each contributing to our mission of delivering exceptional results worldwide.";
   let setupAttempts = 0;
@@ -811,10 +835,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Setup text hover functionality
   function setupTextHovers() {
-    // Get all region items
-    const regionItems = document.querySelectorAll(".region-item h3");
+    // Get all region items (the entire container, not just the heading)
+    const regionItems = document.querySelectorAll(".region-item");
 
-    regionItems.forEach((heading) => {
+    regionItems.forEach((regionItem) => {
+      const heading = regionItem.querySelector("h3");
+      if (!heading) return;
+
       const text = heading.textContent.trim();
 
       // Add cursor pointer and styling
@@ -823,39 +850,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Add hover events based on text content
       if (text === "North America") {
-        heading.addEventListener("mouseenter", () => {
-          heading.style.color = "#a68b5c";
+        regionItem.addEventListener("mouseenter", () => {
           handleUSAMouseEnter();
         });
-        heading.addEventListener("mouseleave", () => {
-          heading.style.color = "";
+        regionItem.addEventListener("mouseleave", () => {
           handleUSAMouseLeave();
         });
       } else if (text === "Europe") {
-        heading.addEventListener("mouseenter", () => {
-          heading.style.color = "#a68b5c";
+        regionItem.addEventListener("mouseenter", () => {
           handleEuropeMouseEnter();
         });
-        heading.addEventListener("mouseleave", () => {
-          heading.style.color = "";
+        regionItem.addEventListener("mouseleave", () => {
           handleEuropeMouseLeave();
         });
       } else if (text === "Middle East") {
-        heading.addEventListener("mouseenter", () => {
-          heading.style.color = "#a68b5c";
+        regionItem.addEventListener("mouseenter", () => {
           handleUAEMouseEnter();
         });
-        heading.addEventListener("mouseleave", () => {
-          heading.style.color = "";
+        regionItem.addEventListener("mouseleave", () => {
           handleUAEMouseLeave();
         });
       } else if (text === "Asia") {
-        heading.addEventListener("mouseenter", () => {
-          heading.style.color = "#a68b5c";
+        regionItem.addEventListener("mouseenter", () => {
           handleAsiaMouseEnter();
         });
-        heading.addEventListener("mouseleave", () => {
-          heading.style.color = "";
+        regionItem.addEventListener("mouseleave", () => {
           handleAsiaMouseLeave();
         });
       }
