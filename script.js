@@ -29,6 +29,37 @@ window.addEventListener("scroll", () => {
     header.classList.remove("scrolled");
   }
 
+  // World map background scroll reveal effect
+  const worldBgImage = document.querySelector(".world-bg-image");
+  if (worldBgImage) {
+    const globalSection = document.querySelector(".global-reach-section");
+    if (globalSection) {
+      const rect = globalSection.getBoundingClientRect();
+      const sectionTop = globalSection.offsetTop;
+      const sectionHeight = globalSection.offsetHeight;
+
+      // Check if section is in view
+      if (
+        scrollTop + window.innerHeight > sectionTop &&
+        scrollTop < sectionTop + sectionHeight
+      ) {
+        // Calculate progress through the section (0 to 1)
+        const sectionProgress = Math.max(
+          0,
+          Math.min(
+            1,
+            (scrollTop + window.innerHeight - sectionTop) /
+              (sectionHeight + window.innerHeight)
+          )
+        );
+
+        // Move background from top (-25%) to bottom (0%) based on scroll progress
+        const backgroundPosition = -25 + 25 * sectionProgress;
+        worldBgImage.style.transform = `translateY(${backgroundPosition}%)`;
+      }
+    }
+  }
+
   lastScrollTop = scrollTop;
 });
 
