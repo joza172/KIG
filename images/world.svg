@@ -13,17 +13,20 @@
       stroke-width: 0.5;
       transition: all 0.3s ease;
     }
-    #US, #AE, #IN, #TR, #VN, #IL {
+    #AD, #AL, #AT, #BA, #BE, #BG, #BY, #CH, #CZ, #DE, #DK, #EE, #ES, #FI, #FR, #GB, #GR, #HR, #HU, #IE, #IS, #IT, #LI, #LT, #LU, #LV, #MC, #MD, #ME, #MK, #MT, #NL, #NO, #PL, #PT, #RO, #RS, #SE, #SI, #SK, #SM, #TR, #UA, #VA, #XK, #US, #AE, #IN, #VN {
       fill: #a68b5c;
       stroke: #a68b5c;
       cursor: pointer;
       transition: all 0.3s ease;
     }
-    #US:hover, #AE:hover, #IN:hover, #TR:hover, #VN:hover, #IL:hover {
-      fill: #c8a570;
-      stroke: #c8a570;
-      transform: scale(1.02);
-      filter: drop-shadow(0 0 8px rgba(166, 139, 92, 0.6));
+    .europe-hover {
+      fill: #c8a570 !important;
+      stroke: #c8a570 !important;
+      transform: scale(1.02) !important;
+      transform-origin: center !important;
+      filter: drop-shadow(0 0 8px rgba(166, 139, 92, 0.6)) !important;
+      z-index: 999 !important;
+      isolation: isolate !important;
     }
    </style>
 

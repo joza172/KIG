@@ -516,53 +516,366 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const originalText =
     "Explore our global network of partnerships and projects spanning across multiple continents, each contributing to our mission of delivering exceptional results worldwide.";
+  let setupAttempts = 0;
+  const maxAttempts = 5;
 
-  const countryTexts = {
-    US: "🇺🇸 North America (USA) - Leading innovative projects focusing on cutting-edge technology solutions, strategic partnerships, and sustainable business practices that drive growth in major metropolitan markets.",
+  // Define European countries array
+  const europeCountries = [
+    "AT",
+    "BE",
+    "BG",
+    "HR",
+    "CY",
+    "CZ",
+    "DK",
+    "EE",
+    "FI",
+    "FR",
+    "DE",
+    "GR",
+    "HU",
+    "IE",
+    "IT",
+    "LV",
+    "LT",
+    "LU",
+    "MT",
+    "NL",
+    "PL",
+    "PT",
+    "RO",
+    "SK",
+    "SI",
+    "ES",
+    "SE", // EU countries
+    "AL",
+    "AD",
+    "BA",
+    "BY",
+    "CH",
+    "IS",
+    "LI",
+    "MK",
+    "MD",
+    "MC",
+    "ME",
+    "NO",
+    "RS",
+    "SM",
+    "TR",
+    "UA",
+    "VA",
+    "XK", // Non-EU European countries
+    "GB", // United Kingdom (Great Britain)
+  ];
 
-    AE: "🇦🇪 Middle East (UAE) - Building strong presence in the UAE, tapping into the region's innovative ecosystem while facilitating cross-continental business development and technological advancement opportunities.",
+  // Define Asia countries array (India and Vietnam)
+  const asiaCountries = ["IN", "VN"];
 
-    IN: "🇮🇳 Asia (India) - Partnering with India's dynamic market to deliver scalable solutions that support rapid growth, digital transformation, and leverage local expertise with international standards.",
+  function trySetupMapHover() {
+    setupAttempts++;
 
-    TR: "🇹🇷 Europe (Turkey) - Expanding our European footprint through strategic partnerships in Turkey, delivering innovative solutions that bridge traditional business with modern digital transformation.",
+    if (!worldMapObject) {
+      return false;
+    }
 
-    VN: "🇻🇳 Asia (Vietnam) - Growing our footprint in Vietnam through collaborative projects that leverage local expertise and international standards for sustainable business development.",
+    // Try to get the SVG document
+    let svgDoc = null;
 
-    IL: "🇮🇱 Middle East (Israel) - Building partnerships in Israel to tap into the region's innovative ecosystem and technological advancement opportunities in dynamic markets.",
-  };
+    try {
+      if (worldMapObject.contentDocument) {
+        svgDoc = worldMapObject.contentDocument;
+      }
+    } catch (e) {
+      // Silent fail for security errors
+    }
 
-  function setupCountryHovers() {
-    if (worldMapObject && worldMapObject.contentDocument) {
-      const svgDoc = worldMapObject.contentDocument;
+    if (!svgDoc) {
+      try {
+        if (
+          worldMapObject.contentWindow &&
+          worldMapObject.contentWindow.document
+        ) {
+          svgDoc = worldMapObject.contentWindow.document;
+        }
+      } catch (e) {
+        // Silent fail for security errors
+      }
+    }
 
-      Object.keys(countryTexts).forEach((countryCode) => {
+    if (!svgDoc) {
+      try {
+        if (typeof worldMapObject.getSVGDocument === "function") {
+          svgDoc = worldMapObject.getSVGDocument();
+        }
+      } catch (e) {
+        // Silent fail for security errors
+      }
+    }
+
+    if (svgDoc && svgDoc.URL !== "about:blank") {
+      // Wait a bit more for the SVG content to fully load
+      setTimeout(() => {
+        let setupComplete = false;
+
+        // Setup USA hover
+        const usaPath = svgDoc.getElementById("US");
+        if (usaPath) {
+          usaPath.removeEventListener("mouseenter", handleUSAMouseEnter);
+          usaPath.removeEventListener("mouseleave", handleUSAMouseLeave);
+          usaPath.addEventListener("mouseenter", handleUSAMouseEnter);
+          usaPath.addEventListener("mouseleave", handleUSAMouseLeave);
+          setupComplete = true;
+        }
+
+        // Setup Europe hover for all European countries
+        europeCountries.forEach((countryCode) => {
+          const countryPath = svgDoc.getElementById(countryCode);
+          if (countryPath) {
+            countryPath.removeEventListener(
+              "mouseenter",
+              handleEuropeMouseEnter
+            );
+            countryPath.removeEventListener(
+              "mouseleave",
+              handleEuropeMouseLeave
+            );
+            countryPath.addEventListener("mouseenter", handleEuropeMouseEnter);
+            countryPath.addEventListener("mouseleave", handleEuropeMouseLeave);
+            setupComplete = true;
+          }
+        });
+
+        // Setup Asia hover for all Asian countries
+        asiaCountries.forEach((countryCode) => {
+          const countryPath = svgDoc.getElementById(countryCode);
+          if (countryPath) {
+            countryPath.removeEventListener("mouseenter", handleAsiaMouseEnter);
+            countryPath.removeEventListener("mouseleave", handleAsiaMouseLeave);
+            countryPath.addEventListener("mouseenter", handleAsiaMouseEnter);
+            countryPath.addEventListener("mouseleave", handleAsiaMouseLeave);
+            setupComplete = true;
+          }
+        });
+
+        // Setup UAE hover
+        const uaePath = svgDoc.getElementById("AE");
+        if (uaePath) {
+          uaePath.removeEventListener("mouseenter", handleUAEMouseEnter);
+          uaePath.removeEventListener("mouseleave", handleUAEMouseLeave);
+          uaePath.addEventListener("mouseenter", handleUAEMouseEnter);
+          uaePath.addEventListener("mouseleave", handleUAEMouseLeave);
+          setupComplete = true;
+        }
+
+        return setupComplete;
+      }, 100);
+    } else {
+      return false;
+    }
+  }
+
+  function handleUSAMouseEnter() {
+    // Get SVG document
+    const svgDoc =
+      worldMapObject.contentDocument || worldMapObject.contentWindow?.document;
+    if (svgDoc) {
+      const usaPath = svgDoc.getElementById("US");
+      if (usaPath) {
+        usaPath.classList.add("europe-hover");
+        // Bring element to front by re-appending to parent
+        const parent = usaPath.parentNode;
+        if (parent) {
+          parent.appendChild(usaPath);
+        }
+      }
+    }
+  }
+
+  function handleUSAMouseLeave() {
+    // Get SVG document
+    const svgDoc =
+      worldMapObject.contentDocument || worldMapObject.contentWindow?.document;
+    if (svgDoc) {
+      const usaPath = svgDoc.getElementById("US");
+      if (usaPath) {
+        usaPath.classList.remove("europe-hover");
+      }
+    }
+  }
+
+  function handleEuropeMouseEnter() {
+    // Add hover class to all European countries and bring them to front
+    const svgDoc =
+      worldMapObject.contentDocument || worldMapObject.contentWindow?.document;
+    if (svgDoc) {
+      europeCountries.forEach((countryCode) => {
         const countryPath = svgDoc.getElementById(countryCode);
-
         if (countryPath) {
-          countryPath.addEventListener("mouseenter", function () {
-            globalDescription.style.transition = "all 0.3s ease";
-            globalDescription.innerHTML = countryTexts[countryCode];
-            globalDescription.style.color = "#a68b5c";
-            globalDescription.style.fontWeight = "500";
-          });
-
-          countryPath.addEventListener("mouseleave", function () {
-            globalDescription.style.transition = "all 0.3s ease";
-            globalDescription.innerHTML = originalText;
-            globalDescription.style.color = "";
-            globalDescription.style.fontWeight = "";
-          });
+          countryPath.classList.add("europe-hover");
+          // Bring element to front by re-appending to parent
+          const parent = countryPath.parentNode;
+          if (parent) {
+            parent.appendChild(countryPath);
+          }
         }
       });
     }
   }
 
-  // Wait for SVG to load
-  if (worldMapObject) {
-    worldMapObject.addEventListener("load", setupCountryHovers);
-    // In case it's already loaded
-    if (worldMapObject.contentDocument) {
-      setupCountryHovers();
+  function handleEuropeMouseLeave() {
+    // Remove hover class from all European countries
+    const svgDoc =
+      worldMapObject.contentDocument || worldMapObject.contentWindow?.document;
+    if (svgDoc) {
+      europeCountries.forEach((countryCode) => {
+        const countryPath = svgDoc.getElementById(countryCode);
+        if (countryPath) {
+          countryPath.classList.remove("europe-hover");
+        }
+      });
     }
   }
+
+  function handleAsiaMouseEnter() {
+    // Add hover class to all Asian countries and bring them to front
+    const svgDoc =
+      worldMapObject.contentDocument || worldMapObject.contentWindow?.document;
+    if (svgDoc) {
+      asiaCountries.forEach((countryCode) => {
+        const countryPath = svgDoc.getElementById(countryCode);
+        if (countryPath) {
+          countryPath.classList.add("europe-hover");
+          // Bring element to front by re-appending to parent
+          const parent = countryPath.parentNode;
+          if (parent) {
+            parent.appendChild(countryPath);
+          }
+        }
+      });
+    }
+  }
+
+  function handleAsiaMouseLeave() {
+    // Remove hover class from all Asian countries
+    const svgDoc =
+      worldMapObject.contentDocument || worldMapObject.contentWindow?.document;
+    if (svgDoc) {
+      asiaCountries.forEach((countryCode) => {
+        const countryPath = svgDoc.getElementById(countryCode);
+        if (countryPath) {
+          countryPath.classList.remove("europe-hover");
+        }
+      });
+    }
+  }
+
+  function handleUAEMouseEnter() {
+    // Get SVG document
+    const svgDoc =
+      worldMapObject.contentDocument || worldMapObject.contentWindow?.document;
+    if (svgDoc) {
+      const uaePath = svgDoc.getElementById("AE");
+      if (uaePath) {
+        uaePath.classList.add("europe-hover");
+        // Bring element to front by re-appending to parent
+        const parent = uaePath.parentNode;
+        if (parent) {
+          parent.appendChild(uaePath);
+        }
+      }
+    }
+  }
+
+  function handleUAEMouseLeave() {
+    // Get SVG document
+    const svgDoc =
+      worldMapObject.contentDocument || worldMapObject.contentWindow?.document;
+    if (svgDoc) {
+      const uaePath = svgDoc.getElementById("AE");
+      if (uaePath) {
+        uaePath.classList.remove("europe-hover");
+      }
+    }
+  }
+
+  function retrySetup() {
+    if (setupAttempts < maxAttempts) {
+      setTimeout(() => {
+        if (!trySetupMapHover()) {
+          retrySetup();
+        }
+      }, 500 * setupAttempts); // Increasing delay
+    }
+  }
+
+  // Setup text hover functionality
+  function setupTextHovers() {
+    // Get all region items
+    const regionItems = document.querySelectorAll(".region-item h3");
+
+    regionItems.forEach((heading) => {
+      const text = heading.textContent.trim();
+
+      // Add cursor pointer and styling
+      heading.style.cursor = "pointer";
+      heading.style.transition = "color 0.3s ease";
+
+      // Add hover events based on text content
+      if (text === "North America") {
+        heading.addEventListener("mouseenter", () => {
+          heading.style.color = "#a68b5c";
+          handleUSAMouseEnter();
+        });
+        heading.addEventListener("mouseleave", () => {
+          heading.style.color = "";
+          handleUSAMouseLeave();
+        });
+      } else if (text === "Europe") {
+        heading.addEventListener("mouseenter", () => {
+          heading.style.color = "#a68b5c";
+          handleEuropeMouseEnter();
+        });
+        heading.addEventListener("mouseleave", () => {
+          heading.style.color = "";
+          handleEuropeMouseLeave();
+        });
+      } else if (text === "Middle East") {
+        heading.addEventListener("mouseenter", () => {
+          heading.style.color = "#a68b5c";
+          handleUAEMouseEnter();
+        });
+        heading.addEventListener("mouseleave", () => {
+          heading.style.color = "";
+          handleUAEMouseLeave();
+        });
+      } else if (text === "Asia") {
+        heading.addEventListener("mouseenter", () => {
+          heading.style.color = "#a68b5c";
+          handleAsiaMouseEnter();
+        });
+        heading.addEventListener("mouseleave", () => {
+          heading.style.color = "";
+          handleAsiaMouseLeave();
+        });
+      }
+    });
+  }
+
+  // Start setup process
+  if (worldMapObject) {
+    // Try immediately
+    if (!trySetupMapHover()) {
+      // Listen for load event
+      worldMapObject.addEventListener("load", function () {
+        trySetupMapHover();
+      });
+
+      // Also retry with delays
+      retrySetup();
+    }
+  }
+
+  // Setup text hovers (doesn't need SVG to be loaded)
+  setupTextHovers();
 });
