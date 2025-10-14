@@ -13,15 +13,6 @@ window.addEventListener("scroll", () => {
   const heroHeight = heroSection ? heroSection.offsetHeight : 0;
   const scrollingDown = scrollTop > lastScrollTop;
 
-  // Handle header visibility with smooth transition
-  if (scrollingDown && scrollTop > 50) {
-    // Hide header when scrolling down from top
-    header.classList.add("hidden");
-  } else if (!scrollingDown || scrollTop <= 50) {
-    // Show header when scrolling up or near top
-    header.classList.remove("hidden");
-  }
-
   // Only add scrolled class (white background) when header is visible and past threshold
   if (!header.classList.contains("hidden") && scrollTop > 100) {
     header.classList.add("scrolled");
@@ -510,10 +501,68 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Auto-slide (optional)
-  setInterval(nextSlide, 5000);
+  setInterval(nextSlide, 7000);
 
   // Initialize first slide
   showSlide(0);
 });
 
 console.log("Business Website Template Loaded Successfully!");
+
+// World Map Countries Hover Functionality
+document.addEventListener("DOMContentLoaded", function () {
+  const worldMapObject = document.getElementById("world-map-svg");
+  const globalDescription = document.getElementById("global-description");
+
+  const originalText =
+    "Explore our global network of partnerships and projects spanning across multiple continents, each contributing to our mission of delivering exceptional results worldwide.";
+
+  const countryTexts = {
+    US: "🇺🇸 North America (USA) - Leading innovative projects focusing on cutting-edge technology solutions, strategic partnerships, and sustainable business practices that drive growth in major metropolitan markets.",
+
+    AE: "🇦🇪 Middle East (UAE) - Building strong presence in the UAE, tapping into the region's innovative ecosystem while facilitating cross-continental business development and technological advancement opportunities.",
+
+    IN: "🇮🇳 Asia (India) - Partnering with India's dynamic market to deliver scalable solutions that support rapid growth, digital transformation, and leverage local expertise with international standards.",
+
+    TR: "🇹🇷 Europe (Turkey) - Expanding our European footprint through strategic partnerships in Turkey, delivering innovative solutions that bridge traditional business with modern digital transformation.",
+
+    VN: "🇻🇳 Asia (Vietnam) - Growing our footprint in Vietnam through collaborative projects that leverage local expertise and international standards for sustainable business development.",
+
+    IL: "🇮🇱 Middle East (Israel) - Building partnerships in Israel to tap into the region's innovative ecosystem and technological advancement opportunities in dynamic markets.",
+  };
+
+  function setupCountryHovers() {
+    if (worldMapObject && worldMapObject.contentDocument) {
+      const svgDoc = worldMapObject.contentDocument;
+
+      Object.keys(countryTexts).forEach((countryCode) => {
+        const countryPath = svgDoc.getElementById(countryCode);
+
+        if (countryPath) {
+          countryPath.addEventListener("mouseenter", function () {
+            globalDescription.style.transition = "all 0.3s ease";
+            globalDescription.innerHTML = countryTexts[countryCode];
+            globalDescription.style.color = "#a68b5c";
+            globalDescription.style.fontWeight = "500";
+          });
+
+          countryPath.addEventListener("mouseleave", function () {
+            globalDescription.style.transition = "all 0.3s ease";
+            globalDescription.innerHTML = originalText;
+            globalDescription.style.color = "";
+            globalDescription.style.fontWeight = "";
+          });
+        }
+      });
+    }
+  }
+
+  // Wait for SVG to load
+  if (worldMapObject) {
+    worldMapObject.addEventListener("load", setupCountryHovers);
+    // In case it's already loaded
+    if (worldMapObject.contentDocument) {
+      setupCountryHovers();
+    }
+  }
+});
