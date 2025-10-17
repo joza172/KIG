@@ -329,7 +329,7 @@ const observer = new IntersectionObserver((entries) => {
 // Setup intersection observer for scroll animations
 document.addEventListener("DOMContentLoaded", () => {
   const elementsToAnimate = document.querySelectorAll(
-    ".service-card, .gallery-item, .about-content, .location-content, .contact-content, .global-content-side, .global-map-side, .region-item, .partnerships-info, .contact-form-card, .footer-section, .footer-bottom, .about-animate-image, .about-animate-text, .about-animate-quote, .expertise-header-animate, .expertise-intro-animate, .expertise-card-animate, .approach-header-animate, .approach-slider-left-animate, .approach-slider-right-animate, .approach-controls-animate, .partnership-title-animate, .partnership-item-animate, .section-title-animate, .section-title-center, .section-title-responsive"
+    ".service-card, .gallery-item, .about-content, .location-content, .contact-content, .global-content-side, .global-map-side, .region-item, .partnerships-info, .contact-form-card, .footer-section, .footer-bottom, .about-animate-image, .about-animate-text, .about-animate-quote, .expertise-header-animate, .expertise-intro-animate, .expertise-card-animate, .approach-header-animate, .approach-slider-left-animate, .approach-slider-right-animate, .approach-controls-animate, .partnership-title-animate, .partnership-item-animate, .section-title-animate, .section-title-center, .section-title-responsive, .quote-divider"
   );
 
   elementsToAnimate.forEach((el) => {
@@ -349,7 +349,8 @@ document.addEventListener("DOMContentLoaded", () => {
       !el.classList.contains("partnership-item-animate") &&
       !el.classList.contains("section-title-animate") &&
       !el.classList.contains("section-title-center") &&
-      !el.classList.contains("section-title-responsive")
+      !el.classList.contains("section-title-responsive") &&
+      !el.classList.contains("quote-divider")
     ) {
       el.style.opacity = "0";
       el.style.transform = "translateY(20px)";
@@ -365,6 +366,11 @@ animationStyles.textContent = `
     .animate-in {
         opacity: 1 !important;
         transform: translateY(0) !important;
+    }
+    
+    .quote-divider.animate-in {
+        opacity: 1 !important;
+        transform: scaleX(1) !important;
     }
     
     .nav-link.active {
