@@ -62,6 +62,19 @@ const navMenu = document.querySelector(".nav-menu");
 mobileMenu.addEventListener("click", () => {
   mobileMenu.classList.toggle("active");
   navMenu.classList.toggle("active");
+
+  // Add class to header when mobile menu is active for proper styling
+  if (navMenu.classList.contains("active")) {
+    header.classList.add("mobile-menu-active");
+  } else {
+    header.classList.remove("mobile-menu-active");
+    // Force refresh header state when closing menu
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollTop <= 100) {
+      // At top, ensure header is transparent
+      header.classList.remove("scrolled");
+    }
+  }
 });
 
 // Close mobile menu when clicking on a nav link
@@ -71,7 +84,31 @@ navLinks.forEach((link) => {
   link.addEventListener("click", () => {
     mobileMenu.classList.remove("active");
     navMenu.classList.remove("active");
+    header.classList.remove("mobile-menu-active");
+    // Force refresh header state when closing menu via link
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollTop <= 100) {
+      header.classList.remove("scrolled");
+    }
   });
+});
+
+// Close mobile menu when clicking outside of it
+document.addEventListener("click", (e) => {
+  if (
+    !mobileMenu.contains(e.target) &&
+    !navMenu.contains(e.target) &&
+    navMenu.classList.contains("active")
+  ) {
+    mobileMenu.classList.remove("active");
+    navMenu.classList.remove("active");
+    header.classList.remove("mobile-menu-active");
+    // Force refresh header state when closing menu via outside click
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollTop <= 100) {
+      header.classList.remove("scrolled");
+    }
+  }
 });
 
 // Smooth Scrolling for Navigation Links

@@ -309,18 +309,22 @@ header.scrolled .bar {
   padding: 0.5rem 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  transition: color 0.3s ease;
 }
 
 .nav-link::after {
   content: "";
   position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   width: 0;
   height: 1px;
   background: var(--accent-gold);
-  transition: var(--transition-smooth);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--accent-gold);
 }
 
 .nav-link:hover::after {
@@ -1373,6 +1377,8 @@ header.scrolled .bar {
 .service-icon {
   margin-bottom: 2rem;
   text-align: center;
+  font-size: 2rem;
+  color: var(--accent-gold);
 }
 
 .service-icon img {
@@ -1393,13 +1399,6 @@ header.scrolled .bar {
   color: var(--text-light);
   font-size: 0.95rem;
   line-height: 1.7;
-}
-
-/* Updated Service Icons (Text-based) */
-.service-icon {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: var(--accent-gold);
 }
 
 /* Our Approach Section */
@@ -3057,12 +3056,27 @@ header.scrolled .bar {
 .footer-section p a {
   color: var(--accent-gold);
   text-decoration: none;
-  transition: var(--transition-smooth);
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.footer-section p a::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent-gold);
+  transition: width 0.3s ease;
 }
 
 .footer-section p a:hover {
   color: white;
-  text-decoration: underline;
+}
+
+.footer-section p a:hover::after {
+  width: 100%;
 }
 
 .footer-section ul {
@@ -3076,11 +3090,27 @@ header.scrolled .bar {
 .footer-section ul li a {
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  transition: var(--transition-smooth);
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.footer-section ul li a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent-gold);
+  transition: width 0.3s ease;
 }
 
 .footer-section ul li a:hover {
   color: var(--accent-gold);
+}
+
+.footer-section ul li a:hover::after {
+  width: 100%;
 }
 
 .footer-social {
@@ -3201,6 +3231,50 @@ header.scrolled .bar {
 
   .nav-menu.active {
     left: 0;
+  }
+
+  /* Explicit reset for header when mobile menu is NOT active */
+  header:not(.mobile-menu-active):not(.scrolled) {
+    background-color: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* Reset text colors when mobile menu is closed at top */
+  header:not(.mobile-menu-active):not(.scrolled) .nav-logo a {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  header:not(.mobile-menu-active):not(.scrolled) .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  header:not(.mobile-menu-active):not(.scrolled) .nav-toggle .bar {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  /* Mobile menu background only when at top of page (not scrolled) */
+  header:not(.scrolled).mobile-menu-active {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: var(--border-light);
+    box-shadow: var(--box-shadow-subtle);
+  }
+
+  /* Ensure close icon is always visible when menu is active */
+  header.mobile-menu-active .nav-toggle .bar {
+    background-color: var(--text-dark) !important;
+  }
+
+  /* Logo color when mobile menu is active */
+  header.mobile-menu-active:not(.scrolled) .nav-logo a {
+    color: var(--text-dark) !important;
+    text-shadow: none;
   }
 
   .nav-item {
