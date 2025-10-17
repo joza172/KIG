@@ -8,13 +8,14 @@ setTimeout(() => {
   header.classList.add("transitions-ready");
 }, 1500);
 
+// All section animations are now handled by intersection observer when scrolled into view
+// This includes About, Expertise, Partnerships, and other sections
+
 window.addEventListener("scroll", () => {
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const heroHeight = heroSection ? heroSection.offsetHeight : 0;
-  const scrollingDown = scrollTop > lastScrollTop;
 
   // Only add scrolled class (white background) when header is visible and past threshold
-  if (!header.classList.contains("hidden") && scrollTop > 100) {
+  if (scrollTop > 100) {
     header.classList.add("scrolled");
   } else if (scrollTop <= 100) {
     header.classList.remove("scrolled");
@@ -317,21 +318,38 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      entry.target.classList.add("animate-in");
+      // Add a small delay for more natural feel
+      setTimeout(() => {
+        entry.target.classList.add("animate-in");
+      }, 100);
     }
   });
 }, observerOptions);
 
-// Observe elements for animation
+// Setup intersection observer for scroll animations
 document.addEventListener("DOMContentLoaded", () => {
   const elementsToAnimate = document.querySelectorAll(
-    ".service-card, .gallery-item, .about-content, .location-content, .contact-content"
+    ".service-card, .gallery-item, .about-content, .location-content, .contact-content, .global-content-side, .global-map-side, .region-item, .partnerships-info, .contact-form-card, .footer-section, .footer-bottom, .about-animate-image, .about-animate-text, .about-animate-quote, .expertise-header-animate, .expertise-intro-animate, .expertise-card-animate, .approach-header-animate, .approach-slider-left-animate, .approach-slider-right-animate, .approach-controls-animate"
   );
 
   elementsToAnimate.forEach((el) => {
-    el.style.opacity = "0";
-    el.style.transform = "translateY(20px)";
-    el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+    // Don't override existing styles for elements that have their own CSS animations
+    if (
+      !el.classList.contains("about-animate-image") &&
+      !el.classList.contains("about-animate-text") &&
+      !el.classList.contains("about-animate-quote") &&
+      !el.classList.contains("expertise-header-animate") &&
+      !el.classList.contains("expertise-intro-animate") &&
+      !el.classList.contains("expertise-card-animate") &&
+      !el.classList.contains("approach-header-animate") &&
+      !el.classList.contains("approach-slider-left-animate") &&
+      !el.classList.contains("approach-slider-right-animate") &&
+      !el.classList.contains("approach-controls-animate")
+    ) {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(20px)";
+      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+    }
     observer.observe(el);
   });
 });

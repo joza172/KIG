@@ -220,13 +220,6 @@ header.scrolled {
   box-shadow: var(--box-shadow-subtle);
 }
 
-/* Header hidden when scrolling down - fade out */
-header.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
 /* Header visible state */
 header:not(.hidden) {
   opacity: 1;
@@ -757,6 +750,154 @@ header.scrolled .bar {
   font-weight: 400;
 }
 
+/* About Section Animation Elements - More visible animations */
+.about-animate-image {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.about-animate-text {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+  transition-delay: 0.2s;
+}
+
+.about-animate-quote {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+  transition-delay: 0.4s;
+}
+
+/* Animation states when elements are in view or on page load */
+.about-animate-image.animate-in,
+.about-animate-text.animate-in,
+.about-animate-quote.animate-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Accessibility: Show content immediately if animations are disabled */
+@media (prefers-reduced-motion: reduce) {
+  .about-animate-image,
+  .about-animate-text,
+  .about-animate-quote {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Expertise Section Animation Elements */
+.expertise-header-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.expertise-intro-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition-delay: 0.2s;
+}
+
+.expertise-card-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Staggered delays for expertise cards */
+.expertise-card-animate:nth-child(1) {
+  transition-delay: 0.3s;
+}
+.expertise-card-animate:nth-child(2) {
+  transition-delay: 0.4s;
+}
+.expertise-card-animate:nth-child(3) {
+  transition-delay: 0.5s;
+}
+.expertise-card-animate:nth-child(4) {
+  transition-delay: 0.6s;
+}
+.expertise-card-animate:nth-child(5) {
+  transition-delay: 0.7s;
+}
+.expertise-card-animate:nth-child(6) {
+  transition-delay: 0.8s;
+}
+
+/* Animation states when elements are in view */
+.expertise-header-animate.animate-in,
+.expertise-intro-animate.animate-in,
+.expertise-card-animate.animate-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Accessibility for expertise animations */
+@media (prefers-reduced-motion: reduce) {
+  .expertise-header-animate,
+  .expertise-intro-animate,
+  .expertise-card-animate {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Our Approach Section Animation Elements */
+.approach-header-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.approach-slider-left-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition-delay: 0.2s;
+}
+
+.approach-slider-right-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition-delay: 0.3s;
+}
+
+.approach-controls-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition-delay: 0.4s;
+}
+
+/* Animation states when elements are in view */
+.approach-header-animate.animate-in,
+.approach-slider-left-animate.animate-in,
+.approach-slider-right-animate.animate-in,
+.approach-controls-animate.animate-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Accessibility for approach animations */
+@media (prefers-reduced-motion: reduce) {
+  .approach-header-animate,
+  .approach-slider-left-animate,
+  .approach-slider-right-animate,
+  .approach-controls-animate {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* Mobile responsiveness */
 @media (max-width: 968px) {
   .hero-about-spacer {
@@ -800,6 +941,65 @@ header.scrolled .bar {
 
   .quote-divider {
     margin: 30px 0;
+  }
+
+  /* Faster animations on mobile for better performance */
+  .about-animate-image {
+    transition-duration: 0.6s;
+  }
+
+  .about-animate-text {
+    transition-duration: 0.6s;
+    transition-delay: 0.1s;
+  }
+
+  .about-animate-quote {
+    transition-duration: 0.6s;
+    transition-delay: 0.2s;
+  }
+
+  /* Faster expertise animations on mobile */
+  .expertise-header-animate,
+  .expertise-intro-animate,
+  .expertise-card-animate {
+    transition-duration: 0.6s;
+  }
+
+  .expertise-card-animate:nth-child(1) {
+    transition-delay: 0.2s;
+  }
+  .expertise-card-animate:nth-child(2) {
+    transition-delay: 0.3s;
+  }
+  .expertise-card-animate:nth-child(3) {
+    transition-delay: 0.4s;
+  }
+  .expertise-card-animate:nth-child(4) {
+    transition-delay: 0.5s;
+  }
+  .expertise-card-animate:nth-child(5) {
+    transition-delay: 0.6s;
+  }
+  .expertise-card-animate:nth-child(6) {
+    transition-delay: 0.7s;
+  }
+
+  /* Faster approach animations on mobile */
+  .approach-header-animate,
+  .approach-slider-left-animate,
+  .approach-slider-right-animate,
+  .approach-controls-animate {
+    transition-duration: 0.6s;
+  }
+
+  .approach-slider-left-animate {
+    transition-delay: 0.1s;
+  }
+  .approach-slider-right-animate {
+    transition-delay: 0.2s;
+  }
+  .approach-controls-animate {
+    transition-delay: 0.3s;
   }
 }
 
@@ -1497,6 +1697,9 @@ header.scrolled .bar {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .global-content-side h2 {
@@ -1530,7 +1733,26 @@ header.scrolled .bar {
 .region-item {
   border-left: 3px solid var(--accent-gold);
   padding-left: 24px;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease, opacity 0.8s ease, transform 0.8s ease;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Remove automatic animations - will be triggered by scroll */
+.region-item:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.region-item:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.region-item:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+.region-item:nth-child(4) {
+  transition-delay: 0.4s;
 }
 
 .region-item:hover {
@@ -1571,6 +1793,9 @@ header.scrolled .bar {
   justify-content: center;
   padding: 40px;
   position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .world-svg {
@@ -2197,7 +2422,7 @@ header.scrolled .bar {
   padding-right: 2rem;
   opacity: 0;
   transform: translateY(30px);
-  animation: fadeInUp 0.8s ease-out 0.2s forwards;
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .partnerships-info h2 {
@@ -2315,7 +2540,8 @@ header.scrolled .bar {
   margin-left: auto;
   opacity: 0;
   transform: translateY(30px);
-  animation: fadeInUp 0.8s ease-out 0.4s forwards;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition-delay: 0.2s;
 }
 
 .contact-form-card h3 {
@@ -2679,6 +2905,29 @@ header.scrolled .bar {
   margin-bottom: 3rem;
 }
 
+/* Add fade-in animation to footer sections */
+.footer-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.footer-section:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.footer-section:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.footer-section:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+.footer-section:nth-child(4) {
+  transition-delay: 0.4s;
+}
+
 .footer-section.main h3 {
   font-size: 1.5rem;
   font-weight: 400;
@@ -2786,6 +3035,10 @@ header.scrolled .bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition-delay: 0.5s;
 }
 
 .footer-legal p,
