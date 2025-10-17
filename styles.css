@@ -323,11 +323,33 @@ header.scrolled .bar {
   transition: width 0.3s ease;
 }
 
-.nav-link:hover {
+@media (hover: hover) {
+  .nav-link:hover {
+    color: var(--accent-gold);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+}
+
+/* Remove focus states from navigation links */
+.nav-link:focus,
+.nav-link:focus-visible {
+  outline: none !important;
+  color: inherit !important;
+}
+
+.nav-link:focus::after {
+  width: 0 !important;
+}
+
+/* Active navigation link (current page) */
+.nav-link.active {
   color: var(--accent-gold);
 }
 
-.nav-link:hover::after {
+.nav-link.active::after {
   width: 100%;
 }
 
@@ -389,9 +411,11 @@ header.scrolled .bar {
   border: 1px solid var(--text-dark);
 }
 
-.cta-button.primary:hover {
-  background: transparent;
-  color: var(--text-dark);
+@media (hover: hover) {
+  .cta-button.primary:hover {
+    background: transparent;
+    color: var(--text-dark);
+  }
 }
 
 .cta-button.secondary {
@@ -400,9 +424,11 @@ header.scrolled .bar {
   border: 1px solid var(--text-dark);
 }
 
-.cta-button.secondary:hover {
-  background: var(--text-dark);
-  color: white;
+@media (hover: hover) {
+  .cta-button.secondary:hover {
+    background: var(--text-dark);
+    color: white;
+  }
 }
 
 .cta-button.large {
@@ -425,13 +451,15 @@ header.scrolled .bar {
   outline: none;
 }
 
-.cta-button.hero-discover:hover {
-  background: var(--accent-gold);
-  color: var(--text-dark);
-  text-shadow: none;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-  border: 2px solid var(--accent-gold);
+@media (hover: hover) {
+  .cta-button.hero-discover:hover {
+    background: var(--accent-gold);
+    color: var(--text-dark);
+    text-shadow: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    border: 2px solid var(--accent-gold);
+  }
 }
 
 .cta-button.hero-discover:focus {
@@ -459,11 +487,13 @@ header.scrolled .bar {
   box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
 }
 
-.cta-button.hero-contact:hover {
-  background: #b8962b;
-  border-color: #b8962b;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+@media (hover: hover) {
+  .cta-button.hero-contact:hover {
+    background: #b8962b;
+    border-color: #b8962b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+  }
 }
 
 .cta-button.hero-contact:focus {
@@ -3071,12 +3101,14 @@ header.scrolled .bar {
   transition: width 0.3s ease;
 }
 
-.footer-section p a:hover {
-  color: white;
-}
+@media (hover: hover) {
+  .footer-section p a:hover {
+    color: white;
+  }
 
-.footer-section p a:hover::after {
-  width: 100%;
+  .footer-section p a:hover::after {
+    width: 100%;
+  }
 }
 
 .footer-section ul {
@@ -3105,12 +3137,14 @@ header.scrolled .bar {
   transition: width 0.3s ease;
 }
 
-.footer-section ul li a:hover {
-  color: var(--accent-gold);
-}
+@media (hover: hover) {
+  .footer-section ul li a:hover {
+    color: var(--accent-gold);
+  }
 
-.footer-section ul li a:hover::after {
-  width: 100%;
+  .footer-section ul li a:hover::after {
+    width: 100%;
+  }
 }
 
 .footer-social {

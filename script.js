@@ -1047,4 +1047,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Setup text hovers (doesn't need SVG to be loaded)
   setupTextHovers();
+
+  // Remove focus from navigation links after click
+  const navLinks = document.querySelectorAll(".nav-link");
+  navLinks.forEach((link) => {
+    link.addEventListener("click", function () {
+      // Remove focus after a short delay to allow navigation to complete
+      setTimeout(() => {
+        this.blur();
+      }, 100);
+    });
+  });
 });
