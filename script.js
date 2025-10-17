@@ -495,26 +495,113 @@ document.addEventListener("DOMContentLoaded", function () {
   const rightSlides = rightSlider.querySelectorAll(".slider-item");
   let currentSlide = 0;
 
-  function showSlide(index) {
-    // Hide all slides
-    leftSlides.forEach((slide) => slide.classList.remove("active"));
-    rightSlides.forEach((slide) => slide.classList.remove("active"));
-    dots.forEach((dot) => dot.classList.remove("active"));
+  let isAnimating = false;
 
-    // Show current slide
-    if (leftSlides[index]) leftSlides[index].classList.add("active");
-    if (rightSlides[index]) rightSlides[index].classList.add("active");
+  function showSlide(index, direction = "next") {
+    // Prevent multiple animations at once
+    if (isAnimating) return;
+    isAnimating = true;
+
+    // Get currently active slides
+    const currentActiveLeft = leftSlider.querySelector(".slider-item.active");
+    const currentActiveRight = rightSlider.querySelector(".slider-item.active");
+
+    // Handle left side (content) animation
+    if (
+      currentActiveLeft &&
+      leftSlides[index] &&
+      currentActiveLeft !== leftSlides[index]
+    ) {
+      // Animate out current content
+      currentActiveLeft.style.opacity = "0";
+      currentActiveLeft.style.transform = "translateY(30px)";
+
+      setTimeout(() => {
+        currentActiveLeft.classList.remove("active");
+        currentActiveLeft.style.transform = "translateY(-30px)";
+
+        // Show new content
+        leftSlides[index].classList.add("active");
+        leftSlides[index].style.transform = "translateY(-30px)";
+        leftSlides[index].style.opacity = "0";
+
+        // Force reflow
+        leftSlides[index].offsetHeight;
+
+        // Animate in new content
+        setTimeout(() => {
+          leftSlides[index].style.opacity = "1";
+          leftSlides[index].style.transform = "translateY(0)";
+        }, 50);
+      }, 250);
+    } else if (!currentActiveLeft && leftSlides[index]) {
+      // Initial load
+      leftSlides[index].classList.add("active");
+      leftSlides[index].style.opacity = "1";
+      leftSlides[index].style.transform = "translateY(0)";
+    }
+
+    // Handle right side (image) sliding animation
+    if (
+      currentActiveRight &&
+      rightSlides[index] &&
+      currentActiveRight !== rightSlides[index]
+    ) {
+      // Position new slide off-screen based on direction
+      if (direction === "next") {
+        rightSlides[index].style.transform = "translateX(100%)";
+      } else {
+        rightSlides[index].style.transform = "translateX(-100%)";
+      }
+
+      // Make new slide visible and active
+      rightSlides[index].classList.add("active");
+
+      // Force reflow
+      rightSlides[index].offsetHeight;
+
+      // Start animations
+      setTimeout(() => {
+        // Animate current slide out
+        if (direction === "next") {
+          currentActiveRight.style.transform = "translateX(-100%)";
+        } else {
+          currentActiveRight.style.transform = "translateX(100%)";
+        }
+
+        // Animate new slide in
+        rightSlides[index].style.transform = "translateX(0)";
+
+        // Clean up after animation completes
+        setTimeout(() => {
+          currentActiveRight.classList.remove("active");
+          currentActiveRight.style.transform = "";
+          isAnimating = false;
+        }, 500);
+      }, 50);
+    } else if (!currentActiveRight && rightSlides[index]) {
+      // Initial load
+      rightSlides.forEach((slide) => slide.classList.remove("active"));
+      rightSlides[index].classList.add("active");
+      rightSlides[index].style.transform = "translateX(0)";
+      isAnimating = false;
+    } else {
+      isAnimating = false;
+    }
+
+    // Update dots
+    dots.forEach((dot) => dot.classList.remove("active"));
     if (dots[index]) dots[index].classList.add("active");
   }
 
   function nextSlide() {
     currentSlide = (currentSlide + 1) % leftSlides.length;
-    showSlide(currentSlide);
+    showSlide(currentSlide, "next");
   }
 
   function prevSlide() {
     currentSlide = (currentSlide - 1 + leftSlides.length) % leftSlides.length;
-    showSlide(currentSlide);
+    showSlide(currentSlide, "prev");
   }
 
   // Event listeners
@@ -528,9 +615,6 @@ document.addEventListener("DOMContentLoaded", function () {
       showSlide(currentSlide);
     });
   });
-
-  // Auto-slide (optional)
-  setInterval(nextSlide, 7000);
 
   // Initialize first slide
   showSlide(0);
